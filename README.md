@@ -25,8 +25,7 @@ ou pela escala de trabalho
 - Utilizar algum banco de dados relacional, mysql, postgres, etc.
 - As únicas rotas públicas da aplicação deverá ser o login
 - Cada colaborador só poderá ter uma escala vinculada
-# Desafio extra (NÃO OBRIGATÓRIO, mas é uma cereja muito bonita para o
-bolo):
+# Desafio extra (NÃO OBRIGATÓRIO, mas é uma cereja muito bonita para o bolo):
 Aplicações em grande escala exigem um processamento e arquitetura muito bem trabalhada
 e organizada para suportar a quantidade de carga. Então, o desafio extra consiste em
 receber um registro de ponto com as seguintes informações:
