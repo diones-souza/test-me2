@@ -1,6 +1,6 @@
 # Teste Prático - Desenvolvedor Backend
 
-# O Teste:
+## O Teste:
 Você irá construir uma API REST para cadastro de colaboradores.
 Nossa ideia é que o sistema possa cadastrar um colaborador e uma escala de trabalho (Ex.
 "Escala Padrão - 09:00 às 18:00"), a API deve conter:
