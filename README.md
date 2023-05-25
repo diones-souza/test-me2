@@ -25,7 +25,7 @@ ou pela escala de trabalho
 - Utilizar algum banco de dados relacional, mysql, postgres, etc.
 - As únicas rotas públicas da aplicação deverá ser o login
 - Cada colaborador só poderá ter uma escala vinculada
-# Desafio extra (NÃO OBRIGATÓRIO, mas é uma cereja muito bonita para o bolo):
+## Desafio extra (NÃO OBRIGATÓRIO, mas é uma cereja muito bonita para o bolo):
 Aplicações em grande escala exigem um processamento e arquitetura muito bem trabalhada
 e organizada para suportar a quantidade de carga. Então, o desafio extra consiste em
 receber um registro de ponto com as seguintes informações:
@@ -44,13 +44,13 @@ no seu banco relacional da aplicação, ou pode subir um não relacional para
 armazenar as coordenadas como um mongoDB, isso fica a seu critério.
 - Crie um desenho da sua arquitetura para apresentar sua solução
 - Dê preferência para rodar tudo com um docker compose ou equivalente
-# O que nos impressiona:
+## O que nos impressiona:
 * Uso de Docker
 * Tratamento de erros no backend
 * Alguma camada de cache, exemplo: Redis, Memcache
 * Testes automáticos
 * Publicado em algum link público para demonstração
-# O que avaliamos no seu teste:
+## O que avaliamos no seu teste:
 * Histórico de commits do git;
 * As instruções de como rodar o projeto;
 * Organização, semântica, estrutura, legibilidade, manutenibilidade do seu código;
@@ -60,7 +60,7 @@ armazenar as coordenadas como um mongoDB, isso fica a seu critério.
 Ao finalizar o teste, enviar o link do repositório.
 
 
-### Docker - Project Setup Laravel
+## Docker - Project Setup Laravel
 
 ```sh
 cp .env.example .env

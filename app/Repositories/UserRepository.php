@@ -15,25 +15,17 @@ class UserRepository extends Repository
      */
     public function getItems(array $filter)
     {
-        $type = $filter['type'];
         $query = $this->newQuery()
-            ->with('address')
             ->with('role')
-            ->with('phone');
+            ->with('scale');
         if (isset($filter['active'])) {
             $query->where('active', $filter['active']);
         } else {
             $query->where('active', 1);
         }
-        if (is_array($type)) {
-            $type = implode(',', $type);
-            $query->whereRaw("type in ($type)");
-        } else {
-            $query->where("type", $type);
-        }
         if (isset($filter['search'])) {
             $search = $filter['search'];
-            // atalho para buscar somente pelo id
+            // shortcut to search only by id
             if ($search[0] === '/' && ctype_digit(substr($search, 1))) {
                 $query->where('id', intval(substr($search, 1)));
             } else {
@@ -55,6 +47,8 @@ class UserRepository extends Repository
     public function getUser(string $key, $value)
     {
         return $this->newQuery()
+            ->with('role')
+            ->with('scale')
             ->where($key, $value)
             ->first();
     }
@@ -68,8 +62,7 @@ class UserRepository extends Repository
     {
         return $this->newQuery()
             ->with('role')
-            ->with('address')
-            ->with('phone')
+            ->with('scale')
             ->where($key, $id)
             ->first();
     }
