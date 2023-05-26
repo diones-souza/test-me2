@@ -16,15 +16,16 @@ class UserRepository extends Repository
     public function getItems(array $filter)
     {
         $query = $this->newQuery()
-            ->with('role')
-            ->with('scale');
+            ->selectRaw('users.*, r.name AS role_name, s.name AS scale_name')
+            ->leftJoin('roles AS r', 'users.role_id', '=', 'r.id')
+            ->leftJoin('scales AS s', 'users.scale_id', '=', 's.id');
         if (isset($filter['search'])) {
             $search = $filter['search'];
             // shortcut to search only by id
             if ($search[0] === '/' && ctype_digit(substr($search, 1))) {
-                $query->where('id', intval(substr($search, 1)));
+                return $query->where('id', intval(substr($search, 1)))->first();
             } else {
-                $query->whereRaw("id || name || email || cpf ILIKE " . "'%{$search}%'");
+                $query->whereRaw("users.id || users.name || email || cpf || register || s.name ILIKE " . "'%{$search}%'");
             }
         }
         $query->orderBy('id');

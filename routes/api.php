@@ -21,4 +21,4 @@ Route::group(['prefix' => 'auth'], function () {
 
 Route::group(['prefix' => 'users', 'middleware' => 'jwt'], function () {
     Route::get('/', UserController::class . '@getItems');
-})->middleware('jwt');
+});

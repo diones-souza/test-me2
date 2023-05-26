@@ -22,13 +22,11 @@ class UserController extends Controller
      *      description="Display a list of records.",
      *      path="/users",
      *      security={{"bearerAuth":{}}},
-     *      @OA\Parameter(
-     *          name="search",
-     *          description="search for the record by name/register/email/cpf/id",
+     *      @OA\RequestBody(
      *          required=false,
-     *          in="query",
-     *          @OA\Schema(
-     *              type="string"
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(property="search", type="string"),
      *          )
      *      ),
      *      @OA\Response(
