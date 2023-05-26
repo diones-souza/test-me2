@@ -18,18 +18,13 @@ class UserRepository extends Repository
         $query = $this->newQuery()
             ->with('role')
             ->with('scale');
-        if (isset($filter['active'])) {
-            $query->where('active', $filter['active']);
-        } else {
-            $query->where('active', 1);
-        }
         if (isset($filter['search'])) {
             $search = $filter['search'];
             // shortcut to search only by id
             if ($search[0] === '/' && ctype_digit(substr($search, 1))) {
                 $query->where('id', intval(substr($search, 1)));
             } else {
-                $query->whereRaw("id || name || email ILIKE " . "'%{$search}%'");
+                $query->whereRaw("id || name || email || cpf ILIKE " . "'%{$search}%'");
             }
         }
         $query->orderBy('id');
@@ -44,26 +39,12 @@ class UserRepository extends Repository
      * @param  mixed $value
      * @return object|null
      */
-    public function getUser(string $key, $value)
+    public function getItem(string $key, $value)
     {
         return $this->newQuery()
             ->with('role')
             ->with('scale')
             ->where($key, $value)
-            ->first();
-    }
-
-    /**
-     * @param int $id
-     * @param string $key
-     * @return object|null
-     */
-    public function getItem(int $id, string $key)
-    {
-        return $this->newQuery()
-            ->with('role')
-            ->with('scale')
-            ->where($key, $id)
             ->first();
     }
 

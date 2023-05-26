@@ -47,20 +47,16 @@ class AuthController extends Controller
      */
     public function authenticate(Request $request)
     {
-        try {
-            $validator = Validator::make($request->all(), [
-                'email' => 'required',
-                'password' => 'required'
+        $validator = Validator::make($request->all(), [
+            'email' => 'required',
+            'password' => 'required'
+        ]);
+        if ($validator->fails()) {
+            return response()->json([
+                "statusCode" => 400,
+                "error" => $validator->errors()
             ]);
-            if ($validator->fails()) {
-                return response()->json([
-                    "statusCode" => 400,
-                    "error" => $validator->errors()
-                ]);
-            }
-            return $this->service->authenticate($request->all());
-        } catch (\Throwable $th) {
-            return $th;
         }
+        return $this->service->authenticate($request->all());
     }
 }

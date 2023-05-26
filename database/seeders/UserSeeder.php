@@ -9,6 +9,17 @@ use App\Models\User;
 
 class UserSeeder extends Seeder
 {
+    /**
+     * @return string
+     */
+    function getRandomCpf()
+    {
+        $number = '';
+        for ($i = 0; $i < 11; $i++) {
+            $number .= rand(0, 9);
+        }
+        return $number;
+    }
 
     /**
      * Run the database seeds.
@@ -24,6 +35,8 @@ class UserSeeder extends Seeder
             'email_verified_at' => now(),
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
+            'cpf' => $this->getRandomCpf(),
+            'register' => Str::random(5),
         ]);
     }
 }

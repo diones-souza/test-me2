@@ -3,11 +3,8 @@
 namespace App\Services;
 
 use App\Repositories\UserRepository;
-use App\Units\Events\MessageEvent;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
-use Tymon\JWTAuth\Exceptions\TokenExpiredException;
-use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 
 class AuthService
 {
@@ -19,38 +16,36 @@ class AuthService
     }
 
     /**
-     * Autenticar usuário
-     * @return \Illuminate\Http\JsonResponse
+     *  @param  array $data
+     *  @return \Illuminate\Http\JsonResponse
      */
     public function authenticate(array $data)
     {
         try {
+            $user = null;
             if (!str_contains($data["email"], "@")) {
-                $person = $this->repo->getUser('nickname', $data['email']);
-                if ($person) {
-                    $data["email"] = $person->email;
+                $user = $this->repo->getItem('nickname', $data['email']);
+                if ($user) {
+                    $data["email"] = $user->email;
                 }
             }
             $credentials =  $data;
             if (!$token = JWTAuth::attempt($credentials)) {
                 return response()->json([
                     "statusCode" => 400,
-                    "action" => "Authenticate",
                     "error" => "Invalid username or password"
                 ]);
             }
             return response()->json([
                 "statusCode" => 200,
-                "action" => "Authenticate",
                 "data" => [
                     'token' => compact('token')['token'],
-                    'user' => $this->repo->getUser('email', $data['email'])
+                    'user' => $this->repo->getItem('email', $data['email'])
                 ]
             ]);
         } catch (JWTException $jwt) {
             return response()->json([
                 "statusCode" => 400,
-                "action" => "Authenticate",
                 "error" => $jwt
             ]);
         }
