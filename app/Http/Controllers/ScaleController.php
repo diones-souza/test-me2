@@ -2,29 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\UserService;
+use App\Services\ScaleService;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
-class UserController extends Controller
+class ScaleController extends Controller
 {
     private $service;
 
-    public function __construct(UserService $service)
+    public function __construct(ScaleService $service)
     {
         $this->service = $service;
     }
 
     /**
      * @OA\Get(
-     *      tags={"Users"},
+     *      tags={"Scales"},
      *      description="Display a list of records.",
-     *      path="/api/users",
+     *      path="/api/scales",
      *      security={{"bearerAuth":{}}},
      *      @OA\Parameter(
      *          name="search",
-     *          description="Search for name/register/cpf/scale/id",
+     *          description="Search for name",
      *          required=false,
      *          in="query",
      *          @OA\Schema(
@@ -54,22 +54,15 @@ class UserController extends Controller
 
     /**
      * @OA\Post(
-     *      tags={"Users"},
+     *      tags={"Scales"},
      *      description="Store a record in the database.",
-     *      path="/api/users",
+     *      path="/api/scales",
      *      security={{"bearerAuth":{}}},
      *      @OA\RequestBody(
      *          required=true,
      *          @OA\JsonContent(
      *              type="object",
-     *              @OA\Property(property="name", type="string"),
-     *              @OA\Property(property="nickname", type="string"),
-     *              @OA\Property(property="email", type="string"),
-     *              @OA\Property(property="password", type="string"),
-     *              @OA\Property(property="cpf", type="string"),
-     *              @OA\Property(property="register", type="string"),
-     *              @OA\Property(property="role_id", type="integer"),
-     *              @OA\Property(property="scale_id", type="integer"),
+     *              @OA\Property(property="name", type="string")
      *          )
      *      ),
      *      @OA\Response(
@@ -91,14 +84,7 @@ class UserController extends Controller
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'email',
-            'nickname' => 'required',
-            'password' => 'required',
-            'register' => 'required',
-            'cpf' => 'required',
-            'scale_id' => 'exists:scales,id',
-            'role_id' => 'exists:roles,id'
+            'name' => 'required'
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -111,14 +97,14 @@ class UserController extends Controller
 
     /**
      * @OA\Put(
-     *      tags={"Users"},
+     *      tags={"Scales"},
      *      description="Update the specified record in the database.",
-     *      path="/api/users/{id}",
+     *      path="/api/scales/{id}",
      *      security={{"bearerAuth":{}}},
      *      @OA\Parameter(
      *          name="id",
      *          in="path",
-     *          description="User ID to be updated",
+     *          description="Scale ID to be updated",
      *          required=true,
      *          @OA\Schema(
      *             type="integer",
@@ -129,14 +115,7 @@ class UserController extends Controller
      *          required=true,
      *          @OA\JsonContent(
      *              type="object",
-     *              @OA\Property(property="name", type="string"),
-     *              @OA\Property(property="nickname", type="string"),
-     *              @OA\Property(property="email", type="string"),
-     *              @OA\Property(property="password", type="string"),
-     *              @OA\Property(property="cpf", type="string"),
-     *              @OA\Property(property="register", type="string"),
-     *              @OA\Property(property="role_id", type="integer"),
-     *              @OA\Property(property="scale_id", type="integer"),
+     *              @OA\Property(property="name", type="string")
      *          )
      *      ),
      *      @OA\Response(
@@ -161,9 +140,8 @@ class UserController extends Controller
     {
         $data = ['id' => $id] + $request->all();
         $validator = Validator::make($data, [
-            'id' => 'required|exists:users,id',
-            'scale_id' => 'exists:scales,id',
-            'role_id' => 'exists:roles,id'
+            'id' => 'required|exists:scales,id',
+            'name' => 'required'
         ]);
         if ($validator->fails()) {
             return response()->json([
@@ -176,14 +154,14 @@ class UserController extends Controller
 
     /**
      * @OA\Delete(
-     *      tags={"Users"},
+     *      tags={"Scales"},
      *      description="Delete a user based on the given ID",
-     *      path="/api/users/{id}",
+     *      path="/api/scales/{id}",
      *      security={{"bearerAuth":{}}},
      *      @OA\Parameter(
      *          name="id",
      *          in="path",
-     *          description="User ID to be deleted",
+     *          description="Scale ID to be deleted",
      *          required=true,
      *          @OA\Schema(
      *             type="integer",
@@ -210,7 +188,7 @@ class UserController extends Controller
     public function delete(int $id)
     {
         $validator = Validator::make(['id' => $id], [
-            'id' => 'required|exists:users,id',
+            'id' => 'required|exists:scales,id',
         ]);
         if ($validator->fails()) {
             return response()->json([

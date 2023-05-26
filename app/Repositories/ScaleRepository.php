@@ -2,13 +2,13 @@
 
 namespace App\Repositories;
 
-use App\Models\User;
+use App\Models\Scale;
 use App\Repositories\Repository;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class UserRepository extends Repository
+class ScaleRepository extends Repository
 {
-    protected $modelClass = User::class;
+    protected $modelClass = Scale::class;
 
     /**
      * @param  Array  $filter
@@ -16,21 +16,18 @@ class UserRepository extends Repository
      */
     public function getItems(array $filter)
     {
-        $query = $this->newQuery()
-            ->selectRaw('users.*, r.name AS role_name, s.name AS scale_name')
-            ->leftJoin('scales AS s', 'users.scale_id', '=', 's.id')
-            ->leftJoin('roles AS r', 'users.role_id', '=', 'r.id');
+        $query = $this->newQuery();
         if (isset($filter['search'])) {
             $search = $filter['search'];
             // shortcut to search only by id
             if ($search[0] === '/' && ctype_digit(substr($search, 1))) {
-                $result = $query->where('users.id', intval(substr($search, 1)))->first();
+                $result = $query->where('id', intval(substr($search, 1)))->first();
                 if (!$result) {
                     throw new HttpException(404, 'Not found');
                 }
                 return $result;
             } else {
-                $query->whereRaw("users.id || users.name || email || cpf || register || s.name ILIKE " . "'%{$search}%'");
+                $query->whereRaw("id || name ILIKE " . "'%{$search}%'");
             }
         }
         $query->orderBy('id');
@@ -56,8 +53,6 @@ class UserRepository extends Repository
     public function getItem(string $key, $value)
     {
         return $this->newQuery()
-            ->with('scale')
-            ->with('role')
             ->where($key, $value)
             ->first();
     }
@@ -68,10 +63,10 @@ class UserRepository extends Repository
      */
     public function delete(int $id)
     {
-        $user = $this->getItem('id', $id);
-        if (!$user) {
+        $scale = $this->getItem('id', $id);
+        if (!$scale) {
             throw new HttpException(404, 'Not found');
         }
-        return $this->destroy($user);
+        return $this->destroy($scale);
     }
 }
