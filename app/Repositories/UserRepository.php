@@ -23,12 +23,12 @@ class UserRepository extends Repository
             $search = $filter['search'];
             // shortcut to search only by id
             if ($search[0] === '/' && ctype_digit(substr($search, 1))) {
-                return $query->where('id', intval(substr($search, 1)))->first();
+                return $query->where('users.id', intval(substr($search, 1)))->first();
             } else {
                 $query->whereRaw("users.id || users.name || email || cpf || register || s.name ILIKE " . "'%{$search}%'");
             }
         }
-        $query->orderBy('id');
+        $query->orderBy('users.id');
         if (isset($filter['page'])) {
             return $query->paginate($this->paginate);
         }

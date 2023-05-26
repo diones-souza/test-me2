@@ -12,7 +12,7 @@ return [
                 /*
                  * Route for accessing api documentation interface
                 */
-                'api' => 'api/docs',
+                'api' => 'api/docs/',
             ],
             'paths' => [
                 /*
@@ -153,6 +153,10 @@ return [
         */
         'securityDefinitions' => [
             'securitySchemes' => [
+                'bearerAuth' => [
+                    'type' => 'http',
+                    'scheme' => 'bearer',
+                ],
                 /*
                  * Examples of Security schemes
                 */
@@ -197,7 +201,8 @@ return [
                     'name' => 'Authorization', // The name of the header or query parameter to be used.
                     'in' => 'header', // The location of the API key. Valid values are "query" or "header".
                 ],
-                */],
+                */
+            ],
             'security' => [
                 /*
                  * Examples of Securities

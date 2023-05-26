@@ -20,13 +20,15 @@ class UserController extends Controller
      * @OA\Get(
      *      tags={"Users"},
      *      description="Display a list of records.",
-     *      path="/users",
+     *      path="/api/users",
      *      security={{"bearerAuth":{}}},
-     *      @OA\RequestBody(
+     *      @OA\Parameter(
+     *          name="search",
+     *          description="Search for name/register/cpf/scale/id",
      *          required=false,
-     *          @OA\JsonContent(
-     *              type="object",
-     *              @OA\Property(property="search", type="string"),
+     *          in="query",
+     *          @OA\Schema(
+     *              type="string"
      *          )
      *      ),
      *      @OA\Response(

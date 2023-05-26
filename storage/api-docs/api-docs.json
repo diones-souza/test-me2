@@ -5,13 +5,13 @@
         "version": "1.0.0"
     },
     "paths": {
-        "/auth/login": {
+        "/api/auth/login": {
             "post": {
                 "tags": [
                     "Auth"
                 ],
                 "description": "Authenticate user",
-                "operationId": "776b33040823090b71e359d40afc8f26",
+                "operationId": "f90b98e1a13d0e39023429a4db92b644",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -43,18 +43,18 @@
                 }
             }
         },
-        "/users": {
+        "/api/users": {
             "get": {
                 "tags": [
                     "Users"
                 ],
                 "description": "Display a list of records.",
-                "operationId": "eec78796f0de42c9cbf2ee0be2680993",
+                "operationId": "73f101aeb5b0f0bd6ce5b7dc8ccee2aa",
                 "parameters": [
                     {
                         "name": "search",
                         "in": "query",
-                        "description": "search for the record by name/register/email/cpf/id",
+                        "description": "Search for name/register/cpf/scale/id",
                         "required": false,
                         "schema": {
                             "type": "string"
@@ -77,6 +77,14 @@
                         "bearerAuth": []
                     }
                 ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer"
             }
         }
     }
