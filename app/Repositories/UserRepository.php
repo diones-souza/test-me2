@@ -17,8 +17,8 @@ class UserRepository extends Repository
     {
         $query = $this->newQuery()
             ->selectRaw('users.*, r.name AS role_name, s.name AS scale_name')
-            ->leftJoin('roles AS r', 'users.role_id', '=', 'r.id')
-            ->leftJoin('scales AS s', 'users.scale_id', '=', 's.id');
+            ->leftJoin('scales AS s', 'users.scale_id', '=', 's.id')
+            ->leftJoin('roles AS r', 'users.role_id', '=', 'r.id');
         if (isset($filter['search'])) {
             $search = $filter['search'];
             // shortcut to search only by id
@@ -43,22 +43,19 @@ class UserRepository extends Repository
     public function getItem(string $key, $value)
     {
         return $this->newQuery()
-            ->with('role')
             ->with('scale')
+            ->with('role')
             ->where($key, $value)
             ->first();
     }
 
     /**
-     * @param  Array  $data
      * @param  Int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Database\Eloquent\Model
      */
-    public function delete(array $ids)
+    public function delete(int $id)
     {
-        $ids = implode(',', $ids);
-        return $this->newQuery()
-            ->whereRaw("id in ($ids)")
-            ->destroy();
+        $user = $this->getItem('id', $id);
+        return $this->destroy($user);
     }
 }

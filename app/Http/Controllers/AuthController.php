@@ -55,7 +55,7 @@ class AuthController extends Controller
             return response()->json([
                 "statusCode" => 400,
                 "error" => $validator->errors()
-            ]);
+            ], 400);
         }
         return $this->service->authenticate($request->all());
     }

@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\DB;
 
 abstract class Repository
 {
-
     /**
      * Model class for repo.
      *
@@ -31,7 +30,6 @@ abstract class Repository
     }
 
     /**
-     *
      * @param mixed|null $query
      * @param int $take
      * @param bool $paginate
@@ -51,7 +49,6 @@ abstract class Repository
         return $query->get();
     }
     /**
-     *
      * @param int $take
      * @param bool $paginate
      * @return \Illuminate\Support\Collection
@@ -62,7 +59,6 @@ abstract class Repository
     }
 
     /**
-     *
      * @param int $id
      * @param bool $fail
      * @return \Illuminate\Database\Eloquent\Model
@@ -76,9 +72,8 @@ abstract class Repository
     }
 
     /**
-     *
-     * @param $value
-     * @return mixed
+     * @param mixed $value
+     * @return object|null
      */
     public function findOne($value)
     {
@@ -88,9 +83,7 @@ abstract class Repository
     }
 
     /**
-     *
-     * @param $value
-     * @return mixed
+     * @return object|null
      */
     public function getLast()
     {
@@ -101,7 +94,6 @@ abstract class Repository
 
 
     /**
-     *
      * @param array $data
      * @return \Illuminate\Database\Eloquent\Model
      */
@@ -113,7 +105,6 @@ abstract class Repository
     }
 
     /**
-     *
      * @param array $data
      * @return \Illuminate\Database\Eloquent\Model
      */
@@ -123,7 +114,6 @@ abstract class Repository
     }
 
     /**
-     *
      * @param array $data
      * @return \Illuminate\Database\Eloquent\Model
      */
@@ -136,9 +126,8 @@ abstract class Repository
     }
 
     /**
-     *
      * @param array $data
-     * @return bool|null
+     * @return \Illuminate\Database\Eloquent\Model
      */
     public function destroy(Model $model)
     {
@@ -149,7 +138,6 @@ abstract class Repository
     }
 
     /**
-     *
      * @param array $data
      * @return \Illuminate\Database\Eloquent\Model
      */
@@ -160,7 +148,6 @@ abstract class Repository
     }
 
     /**
-     *
      * @param array $data
      * @return \Illuminate\Database\Eloquent\Model
      */

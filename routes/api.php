@@ -21,4 +21,7 @@ Route::group(['prefix' => 'auth'], function () {
 
 Route::group(['prefix' => 'users', 'middleware' => 'jwt'], function () {
     Route::get('/', UserController::class . '@getItems');
+    Route::post('/', UserController::class . '@create');
+    Route::put('/{id}', UserController::class . '@update');
+    Route::delete('/{id}', UserController::class . '@delete');
 });

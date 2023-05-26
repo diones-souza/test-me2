@@ -34,7 +34,7 @@ class AuthService
                 return response()->json([
                     "statusCode" => 400,
                     "error" => "Invalid username or password"
-                ]);
+                ], 400);
             }
             return response()->json([
                 "statusCode" => 200,
@@ -42,12 +42,12 @@ class AuthService
                     'token' => compact('token')['token'],
                     'user' => $this->repo->getItem('email', $data['email'])
                 ]
-            ]);
+            ], 200);
         } catch (JWTException $jwt) {
             return response()->json([
                 "statusCode" => 400,
                 "error" => $jwt
-            ]);
+            ], 400);
         }
     }
 }

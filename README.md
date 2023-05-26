@@ -2,20 +2,16 @@
 
 ## O Teste:
 Você irá construir uma API REST para cadastro de colaboradores.
-Nossa ideia é que o sistema possa cadastrar um colaborador e uma escala de trabalho (Ex.
-"Escala Padrão - 09:00 às 18:00"), a API deve conter:
+Nossa ideia é que o sistema possa cadastrar um colaborador e uma escala de trabalho (Ex. "Escala Padrão - 09:00 às 18:00"), a API deve conter:
 - Autenticação (via Token usando JWT, Laravel Sanctum ou algo equivalente)
 - Listagem de colaboradores
 - Listagem de escalas de trabalho
-- Cadastro de uma escala. Basta conter o nome da escala (Ex. "Escala Padrão - 09:00 às
-18:00").
-- Cadastro de um colaborador. O campos ficam a seu critério, contudo precisamos,
-obrigatoriamente, que contenha:
+- Cadastro de uma escala. Basta conter o nome da escala (Ex. "Escala Padrão - 09:00 às 18:00").
+- Cadastro de um colaborador. O campos ficam a seu critério, contudo precisamos, obrigatoriamente, que contenha:
 - Nome, Matrícula, CPF e uma escala de trabalho vinculada
 - Edição de dados de um Colaborador
 - Exclusão de um colaborador
-- Deve ser possível também buscar colaboradores pelo nome, documento, matrícula
-ou pela escala de trabalho
+- Deve ser possível também buscar colaboradores pelo nome, documento, matrícula ou pela escala de trabalho
 - A stack deve ser da seguinte forma:
 - Linguagem PHP e Typescript
 - Desenvolver backend com algum framework abaixo:
