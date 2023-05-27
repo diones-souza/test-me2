@@ -91,6 +91,7 @@ class PointController extends Controller
             'register' => 'required|date',
             'latitude' => 'required|numeric|min:-90|max:90',
             'longitude' => 'required|numeric|min:-180|max:180',
+            'photo' => 'base64image',
             'user_id' => 'required|exists:users,id'
         ]);
         if ($validator->fails()) {
@@ -155,6 +156,7 @@ class PointController extends Controller
             'register' => 'date',
             'latitude' => 'numeric|min:-90|max:90',
             'longitude' => 'numeric|min:-180|max:180',
+            'photo' => 'base64image',
             'user_id' => 'exists:users,id'
         ]);
         if ($validator->fails()) {
