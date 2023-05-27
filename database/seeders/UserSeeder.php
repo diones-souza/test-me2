@@ -4,10 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Role;
 use App\Models\Scale;
-use Database\Factories\UserFactory;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
 use App\Models\User;
 
 class UserSeeder extends Seeder
@@ -19,7 +16,6 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $userFactory = new UserFactory();
         $role = Role::factory()->create([
             'name' => 'Administrator',
         ]);
@@ -30,11 +26,6 @@ class UserSeeder extends Seeder
             'name' => 'Administrator',
             'nickname' => 'admin',
             'email' => 'admin@noemail.com',
-            'email_verified_at' => now(),
-            'password' => Hash::make('password'),
-            'remember_token' => Str::random(10),
-            'cpf' => $userFactory->getRandomCpf(),
-            'register' => Str::random(5),
             'role_id' => $role->id,
             'scale_id' => $scale->id
         ]);

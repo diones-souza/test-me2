@@ -32,6 +32,21 @@ services:
             - postgres:/var/lib/postgresql/data
         networks:
             - point-api
+    db-testing:
+        image: postgres
+        container_name: api-pgsql-testing
+        restart: unless-stopped
+        user: postgres
+        environment:
+            POSTGRES_USER: postgres
+            POSTGRES_PASSWORD: root
+            POSTGRES_DB: testing
+        ports:
+            - "5433:5433"
+        volumes:
+            - postgres:/var/lib/postgresql/data
+        networks:
+            - point-api
     nginx:
         image: nginx
         container_name: api-nginx
