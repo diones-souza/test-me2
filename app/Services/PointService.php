@@ -26,6 +26,7 @@ class PointService extends Service
     public function getItems(array $data)
     {
         try {
+            $this->checkPermissions();
             return response()->json([
                 "statusCode" => 200,
                 "data" => $this->repo->getItems($data)
@@ -71,11 +72,7 @@ class PointService extends Service
     {
         DB::beginTransaction();
         try {
-            $user = JWTAuth::user();
-            $role = Role::where('id', $user->role_id)->first();
-            if ($role->name !== 'Administrator') {
-                throw new HttpException(403, 'Forbidden');
-            }
+            $this->checkPermissions();
             $scale = $this->repo->findOne($data['id']);
             $scale = $this->repo->update($scale, $data);
             DB::commit();
@@ -105,11 +102,7 @@ class PointService extends Service
     {
         DB::beginTransaction();
         try {
-            $user = JWTAuth::user();
-            $role = Role::where('id', $user->role_id)->first();
-            if ($role->name !== 'Administrator') {
-                throw new HttpException(403, 'Forbidden');
-            }
+            $this->checkPermissions();
             $scale = $this->repo->delete($id);
             DB::commit();
             return response()->json([

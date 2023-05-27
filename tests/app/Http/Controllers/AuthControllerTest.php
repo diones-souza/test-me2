@@ -6,16 +6,18 @@ use App\Models\Role;
 use App\Models\Scale;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 # docker-compose exec app php artisan test --filter=AuthControllerTest
 class AuthControllerTest extends TestCase
 {
+    use RefreshDatabase;
+
     /**
      * docker-compose exec app php artisan test --filter=AuthControllerTest::testInvalidCredentials
      *
      * Test the behavior of the login route when invalid credentials are provided.
-     *
      * Verifies when invalid email and password credentials are provided.
      * It also checks that the user is not authenticated after the invalid login attempt.
      *
@@ -40,7 +42,6 @@ class AuthControllerTest extends TestCase
      * docker-compose exec app php artisan test --filter=AuthControllerTest::testValidCredentials
      *
      * Test the behavior of the login route when valid credentials are provided.
-     *
      * Verifies when valid email and password credentials are provided.
      * It also checks that the user authenticated after the valid login attempt.
      *
@@ -48,11 +49,15 @@ class AuthControllerTest extends TestCase
      */
     public function testValidCredentials()
     {
+        // Create a Role and a Scale
         Role::factory()->create();
         Scale::factory()->create();
+
+        // Create a User
         $user = User::factory()->create([
             'password' => Hash::make('password')
         ]);
+
         // Send a POST request to the login route with invalid credentials
         $response = $this->post('api/auth/login', [
             'email' => $user->email,
