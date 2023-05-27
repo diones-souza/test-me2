@@ -36,13 +36,13 @@ class UserRepository extends Repository
         $query->orderBy('id');
         if (isset($filter['page'])) {
             $result = $query->paginate($this->paginate);
-            if (!$result) {
+            if ($result->isEmpty()) {
                 throw new HttpException(404, 'Not found');
             }
             return $result;
         }
         $result = $query->get();
-        if (!$result) {
+        if ($result->isEmpty()) {
             throw new HttpException(404, 'Not found');
         }
         return $result;

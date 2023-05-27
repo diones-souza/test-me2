@@ -2,16 +2,16 @@
 
 namespace App\Services;
 
-use App\Repositories\UserRepository;
+use App\Jobs\CreatePoint;
+use App\Repositories\PointRepository;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class UserService
+class PointService
 {
     private $repo;
 
-    public function __construct(UserRepository $repository)
+    public function __construct(PointRepository $repository)
     {
         $this->repo = $repository;
     }
@@ -46,22 +46,13 @@ class UserService
      */
     public function create(array $data)
     {
-        DB::beginTransaction();
         try {
-            if (isset($data["cpf"])) {
-                $data["cpf"] = preg_replace('/[^0-9]/', '', $data["cpf"]);
-            }
-            if (isset($data['password']) && $data['password']) {
-                $data['password'] = Hash::make($data['password']);
-            }
-            $user = $this->repo->create($data);
-            DB::commit();
+            CreatePoint::dispatch($data)->onQueue('point');
             return response()->json([
                 "statusCode" => 201,
-                "data" => $user
+                "message" => 'Point added queue'
             ], 201);
         } catch (\Throwable $th) {
-            DB::rollBack();
             return response()->json([
                 "statusCode" => 400,
                 "error" => $th->getMessage()
@@ -77,17 +68,12 @@ class UserService
     {
         DB::beginTransaction();
         try {
-            $user = $this->repo->findOne($data['id']);
-            if (isset($data['password']) && $data['password']) {
-                $data['password'] = Hash::make($data['password']);
-            } else {
-                $data['password'] = $user->password;
-            }
-            $user = $this->repo->update($user, $data);
+            $scale = $this->repo->findOne($data['id']);
+            $scale = $this->repo->update($scale, $data);
             DB::commit();
             return response()->json([
                 "statusCode" => 200,
-                "data" => $user
+                "data" => $scale
             ], 200);
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -106,11 +92,11 @@ class UserService
     {
         DB::beginTransaction();
         try {
-            $user = $this->repo->delete($id);
+            $scale = $this->repo->delete($id);
             DB::commit();
             return response()->json([
                 "statusCode" => 200,
-                "data" => $user
+                "data" => $scale
             ], 200);
         } catch (HttpException $e) {
             DB::rollBack();

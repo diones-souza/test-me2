@@ -2,13 +2,13 @@
 
 namespace App\Repositories;
 
-use App\Models\Scale;
+use App\Models\Point;
 use App\Repositories\Repository;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-class ScaleRepository extends Repository
+class PointRepository extends Repository
 {
-    protected $modelClass = Scale::class;
+    protected $modelClass = Point::class;
 
     /**
      * @param  Array  $filter
@@ -16,21 +16,23 @@ class ScaleRepository extends Repository
      */
     public function getItems(array $filter)
     {
-        $query = $this->newQuery();
+        $query = $this->newQuery()
+            ->selectRaw('points.*, u.name AS user_name')
+            ->leftJoin('users AS u', 'points.user_id', '=', 'u.id');
         if (isset($filter['search'])) {
             $search = $filter['search'];
             // shortcut to search only by id
             if ($search[0] === '/' && ctype_digit(substr($search, 1))) {
-                $result = $query->where('id', intval(substr($search, 1)))->first();
+                $result = $query->where('points.id', intval(substr($search, 1)))->first();
                 if (!$result) {
                     throw new HttpException(404, 'Not found');
                 }
                 return $result;
             } else {
-                $query->whereRaw("id || name ILIKE " . "'%{$search}%'");
+                $query->whereRaw("u.id || u.name || u.email || u.cpf || u.register || ILIKE " . "'%{$search}%'");
             }
         }
-        $query->orderBy('id');
+        $query->orderBy('points.id');
         if (isset($filter['page'])) {
             $result = $query->paginate($this->paginate);
             if ($result->isEmpty()) {
@@ -63,10 +65,10 @@ class ScaleRepository extends Repository
      */
     public function delete(int $id)
     {
-        $scale = $this->getItem('id', $id);
-        if (!$scale) {
+        $point = $this->getItem('id', $id);
+        if (!$point) {
             throw new HttpException(404, 'Not found');
         }
-        return $this->destroy($scale);
+        return $this->destroy($point);
     }
 }

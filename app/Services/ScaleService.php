@@ -63,8 +63,6 @@ class ScaleService
     }
 
     /**
-     * Atualizar o registro especificado no banco de dados.
-     *
      * @param  Array  $data
      * @return \Illuminate\Http\Response
      */

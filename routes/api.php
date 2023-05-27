@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PointController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ScaleController;
 use Illuminate\Support\Facades\Route;
@@ -32,4 +33,11 @@ Route::group(['prefix' => 'scales', 'middleware' => 'jwt'], function () {
     Route::post('/', ScaleController::class . '@create');
     Route::put('/{id}', ScaleController::class . '@update');
     Route::delete('/{id}', ScaleController::class . '@delete');
+});
+
+Route::group(['prefix' => 'points', 'middleware' => 'jwt'], function () {
+    Route::get('/', PointController::class . '@getItems');
+    Route::post('/', PointController::class . '@create');
+    Route::put('/{id}', PointController::class . '@update');
+    Route::delete('/{id}', PointController::class . '@delete');
 });
