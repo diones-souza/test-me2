@@ -2,12 +2,15 @@
 
 namespace App\Services;
 
+use App\Models\Role;
+use App\Services\Service;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
-class UserService
+class UserService extends Service
 {
     private $repo;
 
@@ -23,6 +26,7 @@ class UserService
     public function getItems(array $data)
     {
         try {
+            $this->checkPermissions();
             return response()->json([
                 "statusCode" => 200,
                 "data" => $this->repo->getItems($data)
@@ -48,6 +52,7 @@ class UserService
     {
         DB::beginTransaction();
         try {
+            $this->checkPermissions();
             if (isset($data["cpf"])) {
                 $data["cpf"] = preg_replace('/[^0-9]/', '', $data["cpf"]);
             }
@@ -60,6 +65,12 @@ class UserService
                 "statusCode" => 201,
                 "data" => $user
             ], 201);
+        } catch (HttpException $e) {
+            DB::rollBack();
+            return response()->json([
+                "statusCode" => $e->getStatusCode(),
+                "error" => $e->getMessage()
+            ], $e->getStatusCode());
         } catch (\Throwable $th) {
             DB::rollBack();
             return response()->json([
@@ -77,6 +88,7 @@ class UserService
     {
         DB::beginTransaction();
         try {
+            $this->checkPermissions();
             $user = $this->repo->findOne($data['id']);
             if (isset($data['password']) && $data['password']) {
                 $data['password'] = Hash::make($data['password']);
@@ -89,6 +101,12 @@ class UserService
                 "statusCode" => 200,
                 "data" => $user
             ], 200);
+        } catch (HttpException $e) {
+            DB::rollBack();
+            return response()->json([
+                "statusCode" => $e->getStatusCode(),
+                "error" => $e->getMessage()
+            ], $e->getStatusCode());
         } catch (\Throwable $th) {
             DB::rollBack();
             return response()->json([
@@ -106,6 +124,7 @@ class UserService
     {
         DB::beginTransaction();
         try {
+            $this->checkPermissions();
             $user = $this->repo->delete($id);
             DB::commit();
             return response()->json([

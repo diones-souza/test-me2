@@ -2,11 +2,14 @@
 
 namespace App\Services;
 
+use App\Models\Role;
+use App\Services\Service;
 use App\Repositories\ScaleRepository;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
-class ScaleService
+class ScaleService extends Service
 {
     private $repo;
 
@@ -22,6 +25,7 @@ class ScaleService
     public function getItems(array $data)
     {
         try {
+            $this->checkPermissions();
             return response()->json([
                 "statusCode" => 200,
                 "data" => $this->repo->getItems($data)
@@ -47,12 +51,18 @@ class ScaleService
     {
         DB::beginTransaction();
         try {
+            $this->checkPermissions();
             $scale = $this->repo->create($data);
             DB::commit();
             return response()->json([
                 "statusCode" => 201,
                 "data" => $scale
             ], 201);
+        } catch (HttpException $e) {
+            return response()->json([
+                "statusCode" => $e->getStatusCode(),
+                "error" => $e->getMessage()
+            ], $e->getStatusCode());
         } catch (\Throwable $th) {
             DB::rollBack();
             return response()->json([
@@ -70,6 +80,7 @@ class ScaleService
     {
         DB::beginTransaction();
         try {
+            $this->checkPermissions();
             $scale = $this->repo->findOne($data['id']);
             $scale = $this->repo->update($scale, $data);
             DB::commit();
@@ -77,6 +88,12 @@ class ScaleService
                 "statusCode" => 200,
                 "data" => $scale
             ], 200);
+        } catch (HttpException $e) {
+            DB::rollBack();
+            return response()->json([
+                "statusCode" => $e->getStatusCode(),
+                "error" => $e->getMessage()
+            ], $e->getStatusCode());
         } catch (\Throwable $th) {
             DB::rollBack();
             return response()->json([
@@ -94,6 +111,7 @@ class ScaleService
     {
         DB::beginTransaction();
         try {
+            $this->checkPermissions();
             $scale = $this->repo->delete($id);
             DB::commit();
             return response()->json([

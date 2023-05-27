@@ -3,11 +3,14 @@
 namespace App\Services;
 
 use App\Jobs\CreatePoint;
+use App\Models\Role;
+use App\Services\Service;
 use App\Repositories\PointRepository;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Exception\HttpException;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
-class PointService
+class PointService extends Service
 {
     private $repo;
 
@@ -68,6 +71,11 @@ class PointService
     {
         DB::beginTransaction();
         try {
+            $user = JWTAuth::user();
+            $role = Role::where('id', $user->role_id)->first();
+            if ($role->name !== 'Administrator') {
+                throw new HttpException(403, 'Forbidden');
+            }
             $scale = $this->repo->findOne($data['id']);
             $scale = $this->repo->update($scale, $data);
             DB::commit();
@@ -75,6 +83,11 @@ class PointService
                 "statusCode" => 200,
                 "data" => $scale
             ], 200);
+        } catch (HttpException $e) {
+            return response()->json([
+                "statusCode" => $e->getStatusCode(),
+                "error" => $e->getMessage()
+            ], $e->getStatusCode());
         } catch (\Throwable $th) {
             DB::rollBack();
             return response()->json([
@@ -92,6 +105,11 @@ class PointService
     {
         DB::beginTransaction();
         try {
+            $user = JWTAuth::user();
+            $role = Role::where('id', $user->role_id)->first();
+            if ($role->name !== 'Administrator') {
+                throw new HttpException(403, 'Forbidden');
+            }
             $scale = $this->repo->delete($id);
             DB::commit();
             return response()->json([

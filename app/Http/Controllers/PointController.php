@@ -151,20 +151,20 @@ class PointController extends Controller
     public function update(int $id, Request $request)
     {
         $data = ['id' => $id] + $request->all();
-        $validator = Validator::make($data, [
-            'id' => 'required|exists:points,id',
-            'register' => 'date',
-            'latitude' => 'numeric|min:-90|max:90',
-            'longitude' => 'numeric|min:-180|max:180',
-            'photo' => 'base64image',
-            'user_id' => 'exists:users,id'
-        ]);
-        if ($validator->fails()) {
-            return response()->json([
-                "statusCode" => 400,
-                "error" => $validator->errors()
-            ], 400);
-        }
+        // $validator = Validator::make($data, [
+        //     'id' => 'required|exists:points,id',
+        //     'register' => 'date',
+        //     'latitude' => 'numeric|min:-90|max:90',
+        //     'longitude' => 'numeric|min:-180|max:180',
+        //     'photo' => 'base64image',
+        //     'user_id' => 'exists:users,id'
+        // ]);
+        // if ($validator->fails()) {
+        //     return response()->json([
+        //         "statusCode" => 400,
+        //         "error" => $validator->errors()
+        //     ], 400);
+        // }
         return $this->service->update($data);
     }
 
