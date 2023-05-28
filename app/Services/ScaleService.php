@@ -2,12 +2,10 @@
 
 namespace App\Services;
 
-use App\Models\Role;
 use App\Services\Service;
 use App\Repositories\ScaleRepository;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ScaleService extends Service
 {

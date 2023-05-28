@@ -79,3 +79,12 @@ docker-compose exec app php artisan db:seed --class=UserSeeder
 'password' => "password"
 }
 ```
+
+### Test battery
+
+```sh
+docker-compose exec app php artisan key:generate --env=testing
+docker-compose exec app php artisan jwt:secret --env=testing
+docker-compose exec app php artisan migrate --env=testing
+docker-compose exec app php artisan test
+```

@@ -2,13 +2,11 @@
 
 namespace App\Services;
 
-use App\Models\Role;
 use App\Services\Service;
 use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserService extends Service
 {

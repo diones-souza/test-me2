@@ -3,12 +3,10 @@
 namespace App\Services;
 
 use App\Jobs\CreatePoint;
-use App\Models\Role;
 use App\Services\Service;
 use App\Repositories\PointRepository;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class PointService extends Service
 {
